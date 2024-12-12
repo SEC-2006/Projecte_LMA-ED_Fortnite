@@ -8,9 +8,13 @@
     </head>
     <body>
         <header>
+            <img src="imatges/epic-games.png" height="35px" width="35px">
             <h1>Fortnite</h1>
             <nav>
-                <input type="checkbox" name="menu"> <!--Aquest checkbox es per a, en css, mostrar i ocultar el menú-->
+                <label for="menu-toggle">
+                    <img src="imatges/menu.png" id="menu-icon" height="30px" width="30px">
+                </label>
+                <input type="checkbox" id="menu-toggle" name="menu">
                 <div id="menu-header">
                     <ul>
                         <li><a href="index.html">Inicio</a></li>
@@ -20,7 +24,7 @@
                         <li><a href="contactes.html">Contacta con nuestro soporte</a></li>
                     </ul>
                 </div>
-            </nav>
+            </nav>            
         </header>
         <main>
             <p>Aquí puedes consultar los próximos torneos y eventos próximos.

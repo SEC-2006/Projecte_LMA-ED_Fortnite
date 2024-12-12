@@ -8,9 +8,13 @@
     </head>
     <body>
         <header>
+            <img src="imatges/epic-games.png" height="35px" width="35px">
             <h1>Fortnite</h1>
             <nav>
-                <input type="checkbox" name="menu"> <!--Aquest checkbox es per a, en css, mostrar i ocultar el menú-->
+                <label for="menu-toggle">
+                    <img src="imatges/menu.png" id="menu-icon" height="30px" width="30px">
+                </label>
+                <input type="checkbox" id="menu-toggle" name="menu">
                 <div id="menu-header">
                     <ul>
                         <li><a href="index.html">Inicio</a></li>
@@ -20,11 +24,13 @@
                         <li><a href="contactes.html">Contacta con nuestro soporte</a></li>
                     </ul>
                 </div>
-            </nav>
+            </nav>            
         </header>
         <main>
-            <p>Descubre cuáles son los modos de juego más jugados actualmente</p>
-            <img src="imatges/remix.jpg">
+            <div class="portada">
+                <img src="imatges/remix.jpg" alt="Remix">
+                <p>Juega a la nueva temporada REMIX. Disponible en "Battle Royale" y "Cero Construcción"</p>
+            </div>
         </main>
         <aside>
             <p>Descarga la Epic Games Store para instalar Fortnite en tu dispositivo. Disponible en PC, iOS (solo en Europa) y Android</p>
