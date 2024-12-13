@@ -26,10 +26,10 @@
                 </div>
             </nav>            
         </header>
-        <main>
+        <main id="horario">
             <p>Aquí puedes consultar los próximos torneos y eventos próximos.
             También puedes consultar las próximas actualizaciones</p>
-            <table border="1" cellpadding="5" cellspacing="0">
+            <table border="1" cellpadding="5" cellspacing="0" class="calendario">
                 <caption>Noviembre 2024</caption>
                 <tr>
                     <th>Nombre</th>
@@ -195,16 +195,18 @@
                 </tr>
             </table>
         </main>
-        <aside>
-            <p>Descarga la Epic Games Store para instalar Fortnite en tu dispositivo. Disponible en PC, iOS (solo en Europa) y Android</p>
-            <button><a href="https://store.epicgames.com/es-ES/download" class="boton-descarga">Descargar</a></button>
-        </aside>
-        <footer id="creditos">
-            <img src="imatges/epic-games.png" height="120px" width="120px">
-            <p>© 2024, Epic Games, Inc., Epic, Epic Games, el logotipo de Epic Games,
-                Fortnite, el logotipo de Fortnite, Unreal, Unreal Engine 4 y UE4 son marcas comerciales
-                o marcas registradas de Epic Games, Inc. tanto en Estados Unidos de América
-                como en el resto del mundo. Todos los derechos reservados.</p>
-        </footer>
+        <div class="inferior">
+            <aside>
+                <p>Descarga la Epic Games Store para instalar Fortnite en tu dispositivo. Disponible en PC, iOS (solo en Europa) y Android</p>
+                <button class="boton-descarga"><a href="https://store.epicgames.com/es-ES/download">Descargar</a></button>
+            </aside>
+            <footer id="creditos">
+                <img src="imatges/epic-games.png" height="120px" width="120px" id="logo-footer">
+                <p>© 2024, Epic Games, Inc., Epic, Epic Games, el logotipo de Epic Games,
+                    Fortnite, el logotipo de Fortnite, Unreal, Unreal Engine 4 y UE4 son marcas comerciales
+                    o marcas registradas de Epic Games, Inc. tanto en Estados Unidos de América
+                    como en el resto del mundo. Todos los derechos reservados.</p>
+            </footer>
+        </div>
     </body>
 </html>
