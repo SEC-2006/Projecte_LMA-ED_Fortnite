@@ -5,6 +5,12 @@
     padding: 0px;
 }
 
+@font-face
+{
+    font-family: 'Burbank Big Condensed';
+    src: url('../fonts/BurbankBigCondensed-Black.otf') format('opentype');
+}  
+
 body
 {
     margin: 0px;
@@ -14,7 +20,7 @@ body
 
 main
 {
-    background-color: white;
+    background: linear-gradient(to right, white, black);
     color: black;
     padding: 2%;
 }
@@ -41,6 +47,7 @@ header
 header h1
 {
     align-self: center;
+    font-family: 'Burbank Big Condensed', sans-serif;
 }
 
 #menu-toggle
@@ -118,6 +125,15 @@ footer
     padding: 20px;
     justify-content: space-between;
     align-items: center;
+    float: left;
+}
+
+footer, aside
+{
+    border-top: 20px solid transparent;
+    border-image-source: url('../imatges/border.png');
+    border-image-slice: 100 0 0 0;
+    border-image-repeat: repeat;
 }
 
 .boton-descarga
@@ -185,6 +201,7 @@ table.calendario
     text-align: center;
     align-self: center;
     margin: 3%;
+    box-shadow: 5px 5px 10px black;
 }
 
 table.calendario th
@@ -192,6 +209,11 @@ table.calendario th
     width: 14%;
     background-color: black;
     color: white;
+}
+
+table.calendario td
+{
+    background: radial-gradient(circle, white, gray)
 }
 
 /*------------------------------------Videos de videos.html------------------------------------*/
@@ -212,12 +234,18 @@ article.video
     border: 2px solid black;
     margin: 3%;
     padding: 1%;
+    background-color: white;
 }
 
 article.video p
 {
     font-style: italic;
     color: rgb(165, 165, 165);
+}
+
+article.video h3
+{
+    text-shadow: 5px 5px 10px rgb(165, 165, 165);
 }
 
 /*------------------------------------Formulari del contactes.html------------------------------------*/
