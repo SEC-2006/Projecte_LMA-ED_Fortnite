@@ -67,7 +67,7 @@ header h1
     width: 100%;
     position: absolute;
     left: 0;
-    bottom: -185px;
+    bottom: -35px;
     text-align: center;
     z-index: 1;
 }
@@ -77,16 +77,9 @@ header h1
     display: block;
 }
 
-#menu-header ul
-{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: inline-block;
-}
-
 #menu-header ul li
 {
+    display: inline-block;
     padding: 10px;
 }
 
@@ -160,6 +153,11 @@ footer, aside
     text-decoration: none;
 }
 
+.boton-descarga:hover
+{
+    transform: scale(1.05);
+}
+
 footer img
 {
     background-color: black;
@@ -211,9 +209,14 @@ table.calendario th
     color: white;
 }
 
-table.calendario td
+tr:nth-child(odd)
 {
-    background: radial-gradient(circle, white, gray)
+    background: radial-gradient(circle, gray, white);
+}
+  
+tr:nth-child(even)
+{
+    background: radial-gradient(circle, white, gray);
 }
 
 /*------------------------------------Videos de videos.html------------------------------------*/
