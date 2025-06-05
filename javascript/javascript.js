@@ -1,71 +1,95 @@
-function demanarDades()
-{
-    var arrayDades = {};
+window.onload = function() {
+    carregarPlantilla();
+    carregarPrincipal();
+};
 
-    arrayDades['dni'] = prompt("Indica el teu DNI");
-    arrayDades['nom'] = prompt("Indica el teu nom");
-    arrayDades['email'] = prompt("Indica el teu email");
-
-    validarDades(arrayDades);
+function carregarPlantilla() {
+    loadPart('./plantilla/header.html', 'header');
+    loadPart('./plantilla/divInferior.html', 'inferior');
 }
 
-function validarDades(arrayDades)
-{
-    var arrayErrors = [];
+function carregarPrincipal() {
+    loadPart('./continguts/principal.html', 'main');
+}
+function carregarHorari() {
+    loadPart('./continguts/horari.html', 'main');
+}
+function carregarVideos() {
+    loadPart('./continguts/videos.html', 'main');
+}
+function carregarContactes() {
+    loadPart('./continguts/contactes.html', 'main');
+}
+function carregarTenda() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', "php/obtenirTenda.php", true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText);
+            let lotesContainer = document.getElementById("main");
+            lotesContainer.innerHTML = "";
 
-    var dniRegex = /^[0-9]{8}[A-Za-z]$/;
-    var nomRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
-    var emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
+            let tendaDiv = document.createElement('div');
+            tendaDiv.id = 'tenda';
 
-    var errorsTrobats = false;
+            if (data.status === "success" && data.lotesTenda.length > 0) {
+                data.lotesTenda.forEach(function(lote) {
+                    let loteDiv = document.createElement('div');
+                    loteDiv.id = 'lote' + lote.id;
+                    loteDiv.style = "display: flex; align-items: center; gap: 20px;";
+                    loteDiv.innerHTML = `
+                        <img src="imatges/loteTenda/loteTenda${lote.id}.png" height="200" width="200" style="flex-shrink: 0;">
+                        <div class="tendaMain">
+                            <h2>${lote.nom}</h2>
+                            <p>${lote.preu} V</p>
+                            <button class="botonTenda">Comprar</button>
+                        </div>
+                        <div class="tendaDescripcio">
+                            <ul>
+                                ${lote.cosmetics.map(cosmetic => `
+                                    <li>${cosmetic.nom} (${cosmetic.tipus})</li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                    tendaDiv.appendChild(loteDiv);
+                });
+            } else {
+                tendaDiv.innerHTML = "<p>No hay datos para mostrar</p>";
+            }
 
-    if (dniRegex.test(arrayDades['dni']))
-    {
-        arrayDades['dni'] = dniMajuscula(arrayDades['dni']);
-    }
-    else
-    {
-        errorsTrobats = true;
-        arrayErrors.push("El DNI deu tenir 8 digits i una lletra al final, 9 digits en total");
-    }
-
-    if (nomRegex.test(arrayDades['nom']))
-    {
-        arrayDades['nom'] = primeraMajuscula(arrayDades['nom']);
-    }
-    else
-    {
-        errorsTrobats = true;
-        arrayErrors.push("El nom deu tenir dos paraules");
-    }
-
-    if (!emailRegex.test(arrayDades['email']))
-    {
-        errorsTrobats = true;
-        arrayErrors.push("El email deu seguir el patró text@text.text");
-    }
-
-    if (errorsTrobats)
-    {
-        var textErrors = arrayErrors.join("\n");
-        alert(textErrors);
-    }
-    else
-    {
-        alert(arrayDades['dni']+"\n"+arrayDades['nom']+"\n"+arrayDades['email']);
-    }
+            lotesContainer.appendChild(tendaDiv);
+        } else {
+            alert("Error cargando los lotes!");
+            console.error("Error cargando los lotes!");
+        }
+    };
+    xhr.send();
 }
 
-function primeraMajuscula(nom)
-{
-    return nom.split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(" ");
-}
+function loadPart(url, ClaseOId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
 
-function dniMajuscula(dni)
-{
-    var digits = dni.slice(0, 8);
-    var lletra = dni.slice(8, 9).toUpperCase();
-    return digits + lletra;
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var element = document.getElementById(ClaseOId);
+            if (!element) {
+                element = document.querySelector('.' + ClaseOId);
+            }
+            if (element) {
+                element.innerHTML = xhr.responseText;
+            } else {
+                console.error('Element no trobat: ' + ClaseOId);
+            }
+        } else {
+            console.error('Error al carregar ' + ClaseOId);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error('Error en la sol·licitud');
+    };
+
+    xhr.send();
 }
