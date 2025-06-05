@@ -1,0 +1,35 @@
+
+<form method="post" action="#" style="width: 70%; margin: auto;">
+    <fieldset>
+        <legend>Contactar con Epic Games</legend>
+
+        <label for="email">Correo electrónico:</label><br>
+        <input type="email" name="email" required placeholder="example@mail.com"></input>
+        <br><br>
+
+        <label for="type">Tipo de problema:</label><br>
+        <select id="type" name="type" required>
+            <option value="open">Ejecución del juego</option>
+            <option value="crash">Crasheo</option>
+            <option value="performance">Rendimiento inadecuado</option>
+            <option value="buy">Problema en una compra</option>
+            <option value="other">Otro</option>
+        </select><br><br>
+
+        <label for="problem">Asunto:</label><br>
+        <input type="text" name="problem" required></input>
+        <br><br>
+
+        <label for="description">Explica tu problema:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+        <br><br>
+
+        <input type="hidden" name="game-version" value="32.10">
+
+        <label for="game">Videojuego:</label><br>
+        <input type="text" name="game" value="Fortnite" disabled></input>
+        <br><br>
+
+        <input type="submit">
+    </fieldset>
+</form>

@@ -265,3 +265,64 @@ legend::first-letter
 {
     font-size: 130%;
 }
+
+/*---------------------------------------------Tenda-------------------------------------------------*/
+
+#tenda {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+#tenda > div {
+    width: auto;
+    border: 2px solid rgb(63, 178, 216);
+    background-color: #75befd;
+}
+
+.tendaMain {
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    gap: 10px;
+    height: 150px;
+    width: 200px;
+    font-weight: bold;
+}
+
+.tendaMain h2 {
+    margin-bottom: auto;
+    font-style: italic;
+}
+
+.tendaMain button {
+    background-color: yellow;
+    border-radius: 10px;
+    font-weight: bold;
+    color: black;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.tendaDescripcio {
+    text-align: left;
+    flex-shrink: 0;
+    height: 150px;
+    width: 250px;
+}
+
+.tendaDescripcio li {
+    list-style: none;
+    font-style: italic;
+}
