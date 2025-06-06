@@ -1,3 +1,6 @@
+var emailUsuari = "";
+var idUsuari = "";
+
 window.onload = function() {
     carregarPlantilla();
     carregarPrincipal();
@@ -19,6 +22,16 @@ function carregarVideos() {
 }
 function carregarContactes() {
     loadPart('./continguts/contactes.html', 'main');
+}
+function carregarLogin() {
+    loadPart('./continguts/login.html', 'main');
+}
+function carregarRegistre() {
+    loadPart('./continguts/registre.html', 'main');
+}
+function carregarBenvingudaUsuari() {
+    var benvingudaUsuari = document.getElementById("benvingudaUsuari");
+    benvingudaUsuari.innerHTML = "Hola, " + emailUsuari;
 }
 function carregarTenda() {
     var xhr = new XMLHttpRequest();
@@ -42,7 +55,7 @@ function carregarTenda() {
                         <div class="tendaMain">
                             <h2>${lote.nom}</h2>
                             <p>${lote.preu} V</p>
-                            <button class="botonTenda">Comprar</button>
+                            <button class="botonTenda" style="${emailUsuari === "" ? 'background-color: #d3d300; cursor: not-allowed;' : ''}" ${emailUsuari === "" ? ` disabled>Inicia sesión para comprar` : ` onclick'comprarLote(${lote.id})>Comprar`}</button>
                         </div>
                         <div class="tendaDescripcio">
                             <ul>
@@ -67,9 +80,9 @@ function carregarTenda() {
     xhr.send();
 }
 
-function loadPart(url, ClaseOId) {
+function loadPart(url, ClaseOId, asinc=true) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
+    xhr.open('GET', url, asinc);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -92,4 +105,94 @@ function loadPart(url, ClaseOId) {
     };
 
     xhr.send();
+}
+
+function login() {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
+
+    const dades = {
+        email: email,
+        password: password
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'php/login.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let result = JSON.parse(xhr.responseText);
+
+            if (result.status === "success") {
+                alert("Inicio de sesión exitoso.");
+                emailUsuari = email;
+                idUsuari = result.idUsuari;
+                loadPart('./plantilla/headerUsuari.html', 'header', false);
+                carregarPrincipal();
+                carregarBenvingudaUsuari();
+            } else {
+                alert("Error: " + result.message);
+            }
+        } else {
+            alert("Error en la solicitud.");
+            console.error("Error en la solicitud:", xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error("Error en la solicitud:", xhr.statusText);
+        alert("Ocurrió un error al intentar iniciar sesión.");
+    };
+
+    xhr.send(JSON.stringify(dades));
+}
+
+function registrar() {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
+
+    const dades = {
+        email: email,
+        password: password,
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'php/registrar.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let result = JSON.parse(xhr.responseText);
+
+            if (result.status === "success") {
+                alert("Registro exitoso.");
+                carregarLogin();
+            } else {
+                alert("Error: " + result.message);
+            }
+        } else {
+            alert("Error en la solicitud.");
+            console.error("Error en la solicitud:", xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error("Error en la solicitud:", xhr.statusText);
+        alert("Ocurrió un error al intentar registrarse.");
+    };
+
+    xhr.send(JSON.stringify(dades));
 }
