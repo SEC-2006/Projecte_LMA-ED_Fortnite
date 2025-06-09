@@ -47,7 +47,14 @@ function carregarTenda() {
 
             if (data.status === "success" && data.lotesTenda.length > 0) {
                 data.lotesTenda.forEach(function(lote) {
+                    
                     let loteDiv = document.createElement('div');
+                    let comprat = false;
+                    lote.usuaris.forEach(function(usuari) {
+                        if (usuari.id === idUsuari) {
+                            comprat = true;
+                        }
+                    });
                     loteDiv.id = 'lote' + lote.id;
                     loteDiv.style = "display: flex; align-items: center; gap: 20px;";
                     loteDiv.innerHTML = `
@@ -55,7 +62,9 @@ function carregarTenda() {
                         <div class="tendaMain">
                             <h2>${lote.nom}</h2>
                             <p>${lote.preu} V</p>
-                            <button class="botonTenda" style="${emailUsuari === "" ? 'background-color: #d3d300; cursor: not-allowed;' : ''}" ${emailUsuari === "" ? ` disabled>Inicia sesión para comprar` : ` onclick'comprarLote(${lote.id})>Comprar`}</button>
+                            <p>${comprat}</p>
+                            <button class="botonTenda" style="${emailUsuari === "" || comprat ? 'background-color: #d3d300; cursor: not-allowed;' : ''}" 
+                            ${emailUsuari === "" ? ` disabled>Inicia sesión para comprar` : ` onclick='comprarLote(${lote.id})'>Comprar`}</button>
                         </div>
                         <div class="tendaDescripcio">
                             <ul>
@@ -78,6 +87,39 @@ function carregarTenda() {
         }
     };
     xhr.send();
+}
+
+function comprarLote(idLote)
+{
+    const dades = {
+        idUsuari: idUsuari,
+        idLote: idLote
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'php/insertarLoteUsuari.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let result = JSON.parse(xhr.responseText);
+            if (result.status === "success") {
+                alert("Lote comprado exitosamente.");
+                carregarTenda();
+            } else {
+                alert("Error: " + result.message);
+            }
+        } else {
+            alert("Error en la solicitud.");
+            console.error("Error en la solicitud:", xhr.statusText);
+        }
+    };
+    
+    xhr.onerror = function() {
+        console.error("Error en la solicitud:", xhr.statusText);
+        alert("Ocurrió un error al intentar comprar el lote.");
+    };
+    
+    xhr.send(JSON.stringify(dades));
 }
 
 function loadPart(url, ClaseOId, asinc=true) {
@@ -133,7 +175,7 @@ function login() {
             if (result.status === "success") {
                 alert("Inicio de sesión exitoso.");
                 emailUsuari = email;
-                idUsuari = result.idUsuari;
+                idUsuari = result.user.id;
                 loadPart('./plantilla/headerUsuari.html', 'header', false);
                 carregarPrincipal();
                 carregarBenvingudaUsuari();
