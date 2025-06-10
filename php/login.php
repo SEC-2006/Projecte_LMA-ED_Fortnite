@@ -18,7 +18,7 @@ if (!$email || !$password) {
 }
 
 // 2. Verificar usuari
-$sqlLogin = "SELECT id, email, contrasenya FROM usuaris WHERE email = \"".$email."\";";
+$sqlLogin = "SELECT id, email, contrasenya, paVos FROM usuaris WHERE email = \"".$email."\";";
 $stmt = mysqli_prepare($connexioBD, $sqlLogin);
 mysqli_stmt_execute($stmt);
 $resultLogin = mysqli_stmt_get_result($stmt);
@@ -30,7 +30,8 @@ if ($resultLogin && $row = mysqli_fetch_assoc($resultLogin)) {
             "message" => "Inicio de sesión exitoso.",
             "user" => [
                 "id" => $row['id'],
-                "email" => $row['email']
+                "email" => $row['email'],
+                "paVos" => $row['paVos']
             ]
         ]);
     } else {
