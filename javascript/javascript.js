@@ -1,5 +1,6 @@
 var emailUsuari = "";
 var idUsuari = "";
+var paVos = 0;
 
 window.onload = function() {
     carregarPlantilla();
@@ -31,7 +32,7 @@ function carregarRegistre() {
 }
 function carregarBenvingudaUsuari() {
     var benvingudaUsuari = document.getElementById("benvingudaUsuari");
-    benvingudaUsuari.innerHTML = "Hola, " + emailUsuari;
+    benvingudaUsuari.innerHTML = "Hola, " + emailUsuari + " - " + paVos + " V";
 }
 function carregarTenda() {
     var xhr = new XMLHttpRequest();
@@ -63,8 +64,8 @@ function carregarTenda() {
                             <h2>${lote.nom}</h2>
                             <p>${lote.preu} V</p>
                             <p>${comprat}</p>
-                            <button class="botonTenda" style="${emailUsuari === "" || comprat ? 'background-color: #d3d300; cursor: not-allowed;' : ''}" 
-                            ${emailUsuari === "" ? ` disabled>Inicia sesión para comprar` : ` onclick='comprarLote(${lote.id})'>Comprar`}</button>
+                            <button class="botonTenda" style="${emailUsuari === "" || comprat ? 'background-color:rgb(146, 146, 0); cursor: not-allowed;' : ''}" 
+                            ${emailUsuari === "" ? ` disabled>Inicia sesión para comprar` : ` onclick='comprarLote(${lote.id, lote.preu})'>Comprar`}</button>
                         </div>
                         <div class="tendaDescripcio">
                             <ul>
@@ -89,7 +90,7 @@ function carregarTenda() {
     xhr.send();
 }
 
-function comprarLote(idLote)
+function comprarLote(idLote, preuLote)
 {
     const dades = {
         idUsuari: idUsuari,
@@ -103,8 +104,28 @@ function comprarLote(idLote)
         if (xhr.status === 200) {
             let result = JSON.parse(xhr.responseText);
             if (result.status === "success") {
-                alert("Lote comprado exitosamente.");
-                carregarTenda();
+                if(paVos < preuLote) {
+                    alert("No tienes suficientes PaVos para comprar este lote.");
+                    return;
+                }
+                else
+                {
+                    paVos-=preuLote;
+                    var xhrPavos = new XMLHttpRequest();
+                    xhrPavos.open('GET', 'php/actualizarPavos.php?paVos=' + paVos + '&idUsuari=' + idUsuari, true);
+                    xhrPavos.onload = function() {
+                        if (data.status === "error") {
+                            alert("Error inesperado durante la compra del lote.");
+                            paVos+=preuLote;
+                            return;
+                        }
+                    };
+                    xhrPavos.send();
+                    alert("Lote comprado exitosamente.");
+                    carregarBenvingudaUsuari();
+                    carregarTenda();
+                }
+                
             } else {
                 alert("Error: " + result.message);
             }
@@ -176,6 +197,7 @@ function login() {
                 alert("Inicio de sesión exitoso.");
                 emailUsuari = email;
                 idUsuari = result.user.id;
+                paVos = result.user.paVos;
                 loadPart('./plantilla/headerUsuari.html', 'header', false);
                 carregarPrincipal();
                 carregarBenvingudaUsuari();
