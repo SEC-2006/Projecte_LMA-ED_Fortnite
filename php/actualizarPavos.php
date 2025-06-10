@@ -1,6 +1,6 @@
 <?php
 $paVos = $_GET['paVos'];
-$idUsuario = $_GET['idUsuario'];
+$idUsuario = $_GET['idUsuari'];
 
 $connexioBD = mysqli_connect("localhost", "samuel", "", "Projecte_LMA_ED");
 if (!$connexioBD) {
